@@ -1,0 +1,42 @@
+logging.level:
+  org.hibernate.SQL: DEBUG
+---
+spring:
+  application:
+    name: turingservice
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://db4free.net:3306/shank_12345?useSSL=false
+    username: shank_12345
+    password: shank@12345
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    show-sql: true
+    hibernate:
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      temp:
+        use_jdbc_metadata_defaults: false
+    properties:
+      hibernate:
+        ddl-auto: validate
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+security:
+  jwt:
+    token:
+      secret-key: turingservicebreakmykey
+      expire-length: 10000
+
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        web: DEBUG
+#logging:
+#  level:
+#    org:
+#      hibernate: ERROR
