@@ -24,7 +24,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department getDepartment(int departmentId) {
         final Department byDepartmentId = departmentRepository.findByDepartmentId(departmentId);
         if (byDepartmentId == null) {
-            throw new ApiException(TuringErrors.DEP_NOT_FOUND.getMessage(), TuringErrors.DEP_NOT_FOUND.getCode(), "department_id");
+            throw new ApiException(TuringErrors.DEP_NOT_FOUND.getMessage(), TuringErrors.DEP_NOT_FOUND.getCode(), TuringErrors.DEP_NOT_FOUND.getField());
         }
         return byDepartmentId;
     }

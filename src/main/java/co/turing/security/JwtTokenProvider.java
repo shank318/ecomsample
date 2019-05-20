@@ -1,17 +1,10 @@
 package co.turing.security;
 
-import co.turing.error.ApiException;
-import co.turing.error.TuringErrors;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
@@ -33,8 +23,8 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
 
-    @Value("${security.jwt.token.expire-length:3600000}")
-    private long validityInMilliseconds = 1000*10; // 1h
+    @Value("${security.jwt.token.expire-length:86400000}")
+    private long validityInMilliseconds = 86400000; // 1h
 
     @Autowired
     private MyUserDetails myUserDetails;
@@ -44,13 +34,13 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String username) {
+    public String createToken(int id) {
 
-        Claims claims = Jwts.claims().setSubject(username);
+        Claims claims = Jwts.claims().setSubject(String.valueOf(id));
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
-        return "Bearer "+Jwts.builder()//
+        return "Bearer " + Jwts.builder()//
                 .setClaims(claims)//
                 .setIssuedAt(now)//
                 .setExpiration(validity)//
@@ -76,12 +66,11 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new ApiException(TuringErrors.AUTH_FAILED.getMessage(), TuringErrors.AUTH_FAILED.getCode(), "NoAuth", HttpStatus.UNAUTHORIZED);
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        if (claims.getBody().getExpiration().before(new Date())) {
+            return false;
         }
+        return true;
     }
 
 }

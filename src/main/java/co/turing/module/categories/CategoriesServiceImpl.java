@@ -33,7 +33,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     public Category getCategory(int id) {
         final Category byCategoryId = categoriesRepository.findByCategoryId(id);
         if (byCategoryId == null) {
-            throw new ApiException(TuringErrors.CAT_NOT_FOUND.getMessage(), TuringErrors.CAT_NOT_FOUND.getCode(), "category_id");
+            throw new ApiException(TuringErrors.CAT_NOT_FOUND.getMessage(), TuringErrors.CAT_NOT_FOUND.getCode(), TuringErrors.CAT_NOT_FOUND.getField());
         }
         return byCategoryId;
     }

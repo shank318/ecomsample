@@ -28,7 +28,7 @@ security:
   jwt:
     token:
       secret-key: turingservicebreakmykey
-      expire-length: 10000
+      expire-length: 86400000
 
 
 #logging:

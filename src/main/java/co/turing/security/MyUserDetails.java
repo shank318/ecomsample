@@ -19,15 +19,15 @@ public class MyUserDetails implements UserDetailsService {
     private CustomerRepository customerRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
-        final Customer user = customerRepository.findByEmail(emailId);
+    public UserDetails loadUserByUsername(String customerId) throws UsernameNotFoundException {
+        final Customer user = customerRepository.findByCustomerId(Integer.parseInt(customerId));
 
         if (user == null) {
-            throw new UsernameNotFoundException("Email '" + emailId + "' not found");
+            throw new UsernameNotFoundException("Customer '" + customerId + "' not found");
         }
 
         return org.springframework.security.core.userdetails.User//
-                .withUsername(String.valueOf(user.getCustomerId()))//
+                .withUsername(customerId)//
                 .password(user.getPassword())//
                 .accountExpired(false)//
                 .accountLocked(false)//

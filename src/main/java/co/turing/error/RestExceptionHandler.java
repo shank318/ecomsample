@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -57,6 +59,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ex.printStackTrace();
         return buildResponseEntity(apiError);
     }
+
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthException(
+            AuthenticationException ex) {
+        log.info("Received Auth exception :: ");
+        ApiError response = new ApiError(HttpStatus.UNAUTHORIZED);
+        response.setMessage(TuringErrors.AUTH_FAILED.getMessage());
+        response.setCode(TuringErrors.AUTH_FAILED.getCode());
+        response.setField("No Auth");
+        ex.printStackTrace();
+        return buildResponseEntity(response);
+    }
+
 
 
     /**
@@ -125,7 +140,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             } else if (fieldError.getField().equals("phone")) {
                 apiError.setCode(TuringErrors.INVALID_PHONE.getCode());
                 apiError.setMessage(TuringErrors.INVALID_PHONE.getMessage());
+            }else if (fieldError.getField().equals("phone")) {
+                apiError.setCode(TuringErrors.INVALID_PHONE.getCode());
+                apiError.setMessage(TuringErrors.INVALID_PHONE.getMessage());
+            }else if (fieldError.getField().equals("creditCard")) {
+                apiError.setCode(TuringErrors.INVALID_CARD.getCode());
+                apiError.setMessage(TuringErrors.INVALID_CARD.getMessage());
             }
+            apiError.setMessage(fieldError.getDefaultMessage());
             apiError.setField(fieldError.getField());
         }
         ex.printStackTrace();

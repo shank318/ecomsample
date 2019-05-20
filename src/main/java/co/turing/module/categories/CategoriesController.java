@@ -80,7 +80,7 @@ public class CategoriesController {
                     pageable = PageRequest.of(page, limit, Sort.by(split[0]).ascending());
                 }
             } else {
-                throw new ApiException(TuringErrors.PAG_01.getMessage(), TuringErrors.PAG_01.getCode(), "order");
+                throw new ApiException(TuringErrors.PAG_01.getMessage(), TuringErrors.PAG_01.getCode(), TuringErrors.PAG_01.getField());
             }
         }
         return pageable;

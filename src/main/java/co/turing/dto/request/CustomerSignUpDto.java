@@ -14,9 +14,10 @@ public class CustomerSignUpDto {
     private String email;
 
     @ApiModelProperty(required = true)
-    @NotBlank
+    @NotBlank(message = "password cannot be blank or null")
     private String password;
 
     @ApiModelProperty(required = true)
+    @NotBlank(message = "name cannot be blank or null")
     private String name;
 }
