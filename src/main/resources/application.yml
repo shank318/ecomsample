@@ -6,9 +6,9 @@ spring:
     name: turingservice
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://db4free.net:3306/shank_12345?useSSL=false
-    username: shank_12345
-    password: shank@12345
+    url: jdbc:mysql://localhost:3306/tshirtshop?useSSL=false
+    username: root
+    password: root
     testWhileIdle: true
     validationQuery: SELECT 1
   jpa:
@@ -29,6 +29,8 @@ security:
     token:
       secret-key: turingservicebreakmykey
       expire-length: 86400000
+stripe:
+  api-key: sk_test_lomdOfxbm7QDgZWvR82UhV6D
 
 
 #logging:

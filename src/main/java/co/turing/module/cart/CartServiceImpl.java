@@ -68,8 +68,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public int totalCartAmount(String cartId) {
-        final Integer cartValue = cartRepo.getCartValue(cartId);
+    public Double totalCartAmount(String cartId) {
+        final Double cartValue = cartRepo.getCartValue(cartId);
         if (cartValue == null) throw new ApiException(TuringErrors.CART_ITEM_NOT_FOUND.getMessage(),TuringErrors.CART_ITEM_NOT_FOUND.getCode(),TuringErrors.CART_ITEM_NOT_FOUND.getField());
         return cartValue;
     }

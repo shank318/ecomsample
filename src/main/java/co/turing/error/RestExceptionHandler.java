@@ -1,5 +1,6 @@
 package co.turing.error;
 
+import com.stripe.exception.StripeException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(response);
     }
 
+    @ExceptionHandler(StripeException.class)
+    protected ResponseEntity<Object> handleStripeException(
+            StripeException ex) {
+        log.info("Received Auth exception :: ");
+        ApiError response = new ApiError(HttpStatus.valueOf(ex.getStatusCode()));
+        response.setMessage(ex.getMessage());
+        response.setCode(ex.getCode());
+        response.setField("source");
+        ex.printStackTrace();
+        return buildResponseEntity(response);
+    }
 
 
     /**
@@ -140,10 +152,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             } else if (fieldError.getField().equals("phone")) {
                 apiError.setCode(TuringErrors.INVALID_PHONE.getCode());
                 apiError.setMessage(TuringErrors.INVALID_PHONE.getMessage());
-            }else if (fieldError.getField().equals("phone")) {
+            } else if (fieldError.getField().equals("phone")) {
                 apiError.setCode(TuringErrors.INVALID_PHONE.getCode());
                 apiError.setMessage(TuringErrors.INVALID_PHONE.getMessage());
-            }else if (fieldError.getField().equals("creditCard")) {
+            } else if (fieldError.getField().equals("creditCard")) {
                 apiError.setCode(TuringErrors.INVALID_CARD.getCode());
                 apiError.setMessage(TuringErrors.INVALID_CARD.getMessage());
             }

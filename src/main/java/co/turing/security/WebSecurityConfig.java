@@ -41,6 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/attributes/**").permitAll()
                 .antMatchers("/products/**").permitAll()
                 .antMatchers("/shoppingcart/**").permitAll()
+                .antMatchers("/tax/**").permitAll()
+                .antMatchers("/shipping/**").permitAll()
 
                 // Disallow everything else..
                 .anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());

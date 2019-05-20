@@ -48,7 +48,7 @@ public interface CartRepo extends JpaRepository<Cart, Integer> {
             "  INNER JOIN product p\n" +
             "               ON sc.product_id = p.product_id\n" +
             "  WHERE      sc.cart_id = :cart_id AND sc.buy_now", nativeQuery = true)
-    Integer getCartValue(@Param("cart_id") String cartId);
+    Double getCartValue(@Param("cart_id") String cartId);
 
     Cart findByCartIdAndProductIdAndAttributes(String cartId, int productId, String att);
 

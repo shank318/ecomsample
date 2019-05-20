@@ -20,6 +20,7 @@ public enum TuringErrors {
     DEP_NOT_FOUND("DEP_02", "Don'exist department with this ID.", "department_id"),
     CAT_NOT_FOUND("CAT_01", "Don't exist category with this ID.", "category_id"),
     CART_ITEM_NOT_FOUND("CART_01", "Don't exist cart item with this ID.", "item_id"),
+    ORDER_NOT_FOUND("ORDER_01", "Don't exist order with this ID.", "order_id"),
     PAG_02("PAG_02", "The field of order is not allow sorting.", "order"),
     PAG_01("PAG_01", "The order is not matched 'field,(DESC|ASC)", "order");
 

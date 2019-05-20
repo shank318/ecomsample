@@ -65,7 +65,7 @@ public class SwaggerConfig {
     }
 
     private Predicate<String> paths() {
-        return Predicates.or( regex("/customers/creditCard"),regex("/customers/address"),regex("/customer.*"));
+        return Predicates.or( regex("/customers/creditCard"),regex("/customers/address"),regex("/customer.*"),regex("/orders.*"));
     }
 
     private ApiKey apiKey() {
