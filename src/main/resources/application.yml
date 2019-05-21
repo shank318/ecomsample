@@ -5,10 +5,10 @@ spring:
   application:
     name: turingservice
   datasource:
-    driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/tshirtshop?useSSL=false
-    username: root
-    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://us-cdbr-iron-east-02.cleardb.net/heroku_ade11665172ab54?reconnect=true
+    username: bfa091abc839a6
+    password: 37b3adab
     testWhileIdle: true
     validationQuery: SELECT 1
   jpa:
@@ -31,6 +31,7 @@ security:
       expire-length: 86400000
 stripe:
   api-key: sk_test_lomdOfxbm7QDgZWvR82UhV6D
+  secret: whsec_Qo92LgLsAVIBkZOson6d95wLC63jrDPE
 
 
 #logging:

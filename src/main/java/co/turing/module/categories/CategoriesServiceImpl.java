@@ -6,6 +6,8 @@ import co.turing.error.TuringErrors;
 import co.turing.module.categories.domain.Category;
 import co.turing.module.department.domian.Department;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,12 +17,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames={"categories"})
 public class CategoriesServiceImpl implements CategoriesService {
 
     @Autowired
     CategoriesRepository categoriesRepository;
 
     @Override
+    @Cacheable
     public ListCategoriesResponse findAllCategories(Pageable pageable) {
         final Page<Category> all = categoriesRepository.findAll(pageable);
         ListCategoriesResponse categoriesResponse = new ListCategoriesResponse();
@@ -30,6 +34,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
+    @Cacheable
     public Category getCategory(int id) {
         final Category byCategoryId = categoriesRepository.findByCategoryId(id);
         if (byCategoryId == null) {
@@ -39,6 +44,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
+    @Cacheable
     public List<Category> findCategoriesByDepartmentId(int departmentId) {
         return categoriesRepository.findAllByDepartmentId(departmentId);
     }

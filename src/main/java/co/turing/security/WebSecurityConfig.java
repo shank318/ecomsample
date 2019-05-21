@@ -39,11 +39,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/categories/**").permitAll()
                 .antMatchers("/departments/**").permitAll()
                 .antMatchers("/attributes/**").permitAll()
-                .antMatchers("/products/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/products/**").permitAll()
                 .antMatchers("/shoppingcart/**").permitAll()
                 .antMatchers("/tax/**").permitAll()
                 .antMatchers("/shipping/**").permitAll()
-                .antMatchers("**/stripe/webhooks/**").permitAll()
+                .antMatchers("/stripe/**").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
 

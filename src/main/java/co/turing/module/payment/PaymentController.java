@@ -6,9 +6,11 @@ import co.turing.error.ApiException;
 import co.turing.module.order.domain.Order;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
+import com.stripe.model.Event;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,10 +48,11 @@ public class PaymentController {
     }
 
     @RequestMapping(value = "/stripe/webhooks", method = RequestMethod.POST, produces = "application/json")
-    @ApiOperation(value = "StripeWebhook .", notes = "")
-    public ResponseEntity stripeWebhook(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody Charge charge) throws ApiException, StripeException {
-        log.info("Webhook received request -->" + charge.toString());
-        return new ResponseEntity(paymentService.confirmPayment(charge), HttpStatus.OK);
+    @ApiOperation(value = "Stripe Webhook .", notes = "")
+    public ResponseEntity stripeWebhook(HttpServletRequest request) throws ApiException, IOException, StripeException {
+        final String payload = IOUtils.toString(request.getInputStream());
+        log.info("Webhook received request -->" + payload.toString());
+        return new ResponseEntity(paymentService.confirmPayment(payload,request.getHeader("Stripe-Signature")), HttpStatus.OK);
     }
 
 }

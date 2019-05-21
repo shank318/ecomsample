@@ -9,6 +9,8 @@ import co.turing.module.products.domain.ProductDetail;
 import co.turing.module.user.domain.Customer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames={"products"})
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
@@ -26,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper modelMapper;
 
     @Override
+    @Cacheable
     public ProductsResponse getProducts(Pageable pageable, int length) {
         final Page<Product> all = productRepo.findAll(pageable);
         ProductsResponse searchResponse = new ProductsResponse();
@@ -42,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable
     public ProductSearchResponse search(String query, Pageable pageable, int length, String allWords) {
         ProductSearchResponse searchResponse = new ProductSearchResponse();
         List<ProductSearchQueryResponse> responses;
@@ -59,11 +64,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable
     public Product getProduct(int productId) {
         return productRepo.findByProductId(productId);
     }
 
     @Override
+    @Cacheable
     public CategoryProductsInfo getProductsByCategory(int catId, Pageable pageable, int length) {
         CategoryProductsInfo department = new CategoryProductsInfo();
         final List<ProductDepartment> productsFromDepartment = productRepo.getProductsFromCategories(catId, length, pageable.getPageNumber(), pageable.getPageSize());
@@ -74,6 +81,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable
     public DepartmentProducts getProductsByDepartment(int depId, Pageable pageable, int length) {
         DepartmentProducts department = new DepartmentProducts();
         final List<ProductDepartment> productsFromDepartment = productRepo.getProductsFromDepartment(depId, length, pageable.getPageNumber(), pageable.getPageSize());
@@ -84,6 +92,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable
     public ProductDetail getProductDetails(int productId) {
         final Product byProductId = productRepo.findByProductId(productId);
         ProductDetail productDetail = modelMapper.map(byProductId, ProductDetail.class);

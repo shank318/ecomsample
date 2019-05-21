@@ -42,6 +42,7 @@ public class OrderController {
     @RequestMapping(value = "/orders/{order_id}", method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value = "Get an Order .", notes = "")
     public ResponseEntity getOrderById(@ApiParam(value = "", required = true) @PathVariable(value = "order_id") int id) throws ApiException {
+        log.info("Get Order request -->" + id);
         return new ResponseEntity(orderService.getOrder(id), HttpStatus.OK);
     }
 
@@ -52,7 +53,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/orders/shortDetail/{order_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get an Order .", notes = "")
+    @ApiOperation(value = "Get Order details in short .", notes = "")
     public ResponseEntity getOrderShortDetail(@ApiParam(value = "", required = true) @PathVariable(value = "order_id") int id) throws ApiException {
         return new ResponseEntity(orderService.getShortDetailOrder(id), HttpStatus.OK);
     }
@@ -60,7 +61,11 @@ public class OrderController {
     @RequestMapping(value = "/orders", method = RequestMethod.POST, produces = "application/json")
     @ApiOperation(value = "Create an order .", notes = "")
     public ResponseEntity createOrder(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody CreateOrder createOrder) throws ApiException {
-        Order order = modelMapper.map(createOrder, Order.class);
+        log.info("Payment request -->" + createOrder.toString());
+        Order order = new Order();
+        order.setReference(createOrder.getCartId());
+        order.setTaxId(createOrder.getTaxId());
+        order.setShippingId(createOrder.getShippingId());
         order.setReference(createOrder.getCartId());
         order.setCustomerId(Integer.parseInt(userDetails.getUsername()));
         Map<String, Integer> output = new HashMap<>();

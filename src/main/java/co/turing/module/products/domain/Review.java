@@ -36,6 +36,7 @@ public class Review {
 
     @Column(name = "created_on")
     @CreationTimestamp
+    @JsonIgnore
     LocalDateTime createdOn;
 
 }

@@ -22,7 +22,6 @@ public class PaymentRequest {
     private String description;
 
     @ApiModelProperty(required = true)
-    @NotBlank
     private int amount;
 
     @ApiModelProperty(required = true)

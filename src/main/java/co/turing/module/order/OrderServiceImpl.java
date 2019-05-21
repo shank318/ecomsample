@@ -7,15 +7,18 @@ import co.turing.error.TuringErrors;
 import co.turing.module.cart.CartService;
 import co.turing.module.order.domain.Order;
 import co.turing.module.order.domain.OrderShortDetail;
-import co.turing.module.payment.domain.PaymentStatus;
+import co.turing.module.payment.PaymentStatusStateMachine;
 import co.turing.module.shipping.ShippingService;
 import co.turing.module.tax.TaxService;
 import co.turing.module.tax.domain.Tax;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
+@Service
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -36,11 +39,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int createOrder(Order order) {
-        order.setStatus(PaymentStatus.INIT.getValue());
+        order.setStatus(PaymentStatusStateMachine.INIT.getValue());
         Double amount = cartService.totalCartAmount(order.getReference());
         final Tax tax = taxService.getTax(order.getTaxId());
         amount = amount + (amount * tax.getTaxPercentage()) / 100;
+        amount = Math.round(amount * 100.0) / 100.0;
         order.setTotalAmount(amount);
+        order.setAuthCode("");
+        order.setComments("");
         Order created = orderRepo.save(order);
         return created.getOrderId();
     }
@@ -74,10 +80,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean updateOrderStatus(int orderId, PaymentStatus paymentStatus) {
+    public boolean updateOrderStatus(int orderId, PaymentStatusStateMachine paymentStatus) {
         Order order = orderRepo.findByOrderId(orderId);
         if (order == null) {
             throw new ApiException(TuringErrors.ORDER_NOT_FOUND.getMessage(), TuringErrors.ORDER_NOT_FOUND.getCode(), TuringErrors.ORDER_NOT_FOUND.getField());
+        }
+        if (!PaymentStatusStateMachine.getEnumByString(order.getStatus()).nextState().contains(paymentStatus)) {
+            throw new ApiException(TuringErrors.INVALID_ORDER_STATUS.getMessage(), TuringErrors.INVALID_ORDER_STATUS.getCode(), TuringErrors.INVALID_ORDER_STATUS.getField());
         }
         order.setStatus(paymentStatus.getValue());
         orderRepo.save(order);

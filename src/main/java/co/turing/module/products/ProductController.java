@@ -18,7 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -90,8 +93,9 @@ public class ProductController {
 
     @RequestMapping(value = "/products/{product_id}/reviews", method = RequestMethod.POST, produces = "application/json")
     @ApiOperation(value = "Get attribute values of a product", notes = "")
-    public ResponseEntity createReview(@Valid @RequestBody Review review,@ApiParam(value = "", required = true) @PathVariable(value = "product_id") int id) throws ApiException {
+    public ResponseEntity createReview(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody Review review, @ApiParam(value = "", required = true) @PathVariable(value = "product_id") int id) throws ApiException {
         review.setProductId(id);
+        review.setCustomerId(Integer.parseInt(userDetails.getUsername()));
         reviewService.createReview(review);
         return new ResponseEntity(HttpStatus.OK);
 

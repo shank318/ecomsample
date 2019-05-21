@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum TuringErrors {
 
-    UNEXPECTED_EXCEPTION("USR-1002", "Unexpected error occurred at server side", "Unknown"),
+    UNEXPECTED_EXCEPTION("UNEX-1001", "Unexpected error occurred at server side", "Unknown"),
     USER_ALREADY_EXISTS("USR_04", "The email already exists", "email"),
     USER_PWD_INCORRECT("USR_01", "Email or Password is invalid.", "password"),
     FIELD_REQUIRED("USR_02", "The field(s) are/is required", ""),
@@ -21,6 +21,9 @@ public enum TuringErrors {
     CAT_NOT_FOUND("CAT_01", "Don't exist category with this ID.", "category_id"),
     CART_ITEM_NOT_FOUND("CART_01", "Don't exist cart item with this ID.", "item_id"),
     ORDER_NOT_FOUND("ORDER_01", "Don't exist order with this ID.", "order_id"),
+    TAX_NOT_FOUND("TAX_01", "Don't exist tax with this ID.", "tax_id"),
+    SHIPPING_NOT_FOUND("SHIP_01", "Don't exist shipping region with this ID.", "shipping_region_id"),
+    INVALID_ORDER_STATUS("ORDER_05", "Cannot do the transition to the next state", "order_status"),
     PAG_02("PAG_02", "The field of order is not allow sorting.", "order"),
     PAG_01("PAG_01", "The order is not matched 'field,(DESC|ASC)", "order");
 

@@ -5,10 +5,11 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -18,6 +19,8 @@ public class Order {
 
     @Column(name = "total_amount")
     private double totalAmount;
+
+    @Column(name = "status")
     private int status;
     private String comments;
     @Column(name = "customer_id")
@@ -29,6 +32,7 @@ public class Order {
     private int shippingId;
     @Column(name = "tax_id")
     private int taxId;
+
     @Column(name = "created_on")
     @CreationTimestamp
     LocalDateTime createdOn;
