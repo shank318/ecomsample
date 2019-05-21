@@ -43,9 +43,9 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        String description = "Cart Service API";
+        String description = "Tshirtshop Service API";
         return new ApiInfoBuilder()
-                .title("Cart REST API")
+                .title("Tshirtshop REST API")
                 .description(description)
                 .license("")
                 .licenseUrl("")

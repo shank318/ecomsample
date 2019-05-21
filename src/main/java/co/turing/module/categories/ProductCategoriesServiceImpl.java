@@ -12,6 +12,11 @@ public class ProductCategoriesServiceImpl implements ProductCategoriesService {
     @Autowired
     ProductCategorieRepo productCategorieRepo;
 
+    /**
+     *
+     * @param productId
+     * @return
+     */
     @Override
     public List<ProductCategoriesInfo> findCategories(int productId) {
         return productCategorieRepo.findAllByProductId(productId);

@@ -31,6 +31,14 @@ public class CategoriesController {
     @Autowired
     ProductCategoriesService productCategoriesService;
 
+    /**
+     *
+     * @param order
+     * @param page
+     * @param limit
+     * @return
+     * @throws ApiException
+     */
     @RequestMapping(value = "/categories", method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value = "Get all Categories .", notes = "")
     public ResponseEntity getAllCategories(@RequestParam(required = false, value = "order") String order, @RequestParam(required = false, value = "page") Integer page, @RequestParam(required = false, value = "limit") Integer limit) throws ApiException {
@@ -38,6 +46,12 @@ public class CategoriesController {
 
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ApiException
+     */
     @RequestMapping(value = "/categories/{category_id}", method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value = "Get a category", notes = "")
     public ResponseEntity getCategoryById(@ApiParam(value = "", required = true) @PathVariable(value = "category_id") int id) throws ApiException {
@@ -45,20 +59,40 @@ public class CategoriesController {
 
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ApiException
+     */
     @RequestMapping(value = "/categories/inProduct/{product_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get a category", notes = "")
+    @ApiOperation(value = "Get categories of a product", notes = "")
     public ResponseEntity getCategoriesByProductId(@ApiParam(value = "", required = true) @PathVariable(value = "product_id") int id) throws ApiException {
         return new ResponseEntity(productCategoriesService.findCategories(id), HttpStatus.OK);
 
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ApiException
+     */
     @RequestMapping(value = "/categories/inDepartment/{department_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get a category", notes = "")
+    @ApiOperation(value = "Get categories of a department", notes = "")
     public ResponseEntity getCategoriesByDepartmentId(@ApiParam(value = "", required = true) @PathVariable(value = "department_id") int id) throws ApiException {
         return new ResponseEntity(categoriesService.findCategoriesByDepartmentId(id), HttpStatus.OK);
 
     }
 
+    /**
+     *
+     * @param order
+     * @param page
+     * @param limit
+     * @return
+     * @throws ApiException
+     */
     private Pageable getPageable(String order, Integer page, Integer limit) throws ApiException {
         if (limit == null) limit = 20;
         if (page == null) page = 0;

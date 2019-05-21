@@ -39,6 +39,12 @@ public class OrderController {
     private ModelMapper modelMapper;
 
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ApiException
+     */
     @RequestMapping(value = "/orders/{order_id}", method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value = "Get an Order .", notes = "")
     public ResponseEntity getOrderById(@ApiParam(value = "", required = true) @PathVariable(value = "order_id") int id) throws ApiException {
@@ -46,22 +52,41 @@ public class OrderController {
         return new ResponseEntity(orderService.getOrder(id), HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param userDetails
+     * @return
+     * @throws ApiException
+     */
     @RequestMapping(value = "/orders/inCustomer", method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value = "Get an Order .", notes = "")
     public ResponseEntity getOrdersByCustomerId(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) throws ApiException {
         return new ResponseEntity(orderService.getOrders(Integer.parseInt(userDetails.getUsername())), HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ApiException
+     */
     @RequestMapping(value = "/orders/shortDetail/{order_id}", method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value = "Get Order details in short .", notes = "")
     public ResponseEntity getOrderShortDetail(@ApiParam(value = "", required = true) @PathVariable(value = "order_id") int id) throws ApiException {
         return new ResponseEntity(orderService.getShortDetailOrder(id), HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param userDetails
+     * @param createOrder
+     * @return
+     * @throws ApiException
+     */
     @RequestMapping(value = "/orders", method = RequestMethod.POST, produces = "application/json")
     @ApiOperation(value = "Create an order .", notes = "")
     public ResponseEntity createOrder(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody CreateOrder createOrder) throws ApiException {
-        log.info("Payment request -->" + createOrder.toString());
+        log.info("Create order request -->" + createOrder.toString());
         Order order = new Order();
         order.setReference(createOrder.getCartId());
         order.setTaxId(createOrder.getTaxId());
@@ -69,7 +94,7 @@ public class OrderController {
         order.setReference(createOrder.getCartId());
         order.setCustomerId(Integer.parseInt(userDetails.getUsername()));
         Map<String, Integer> output = new HashMap<>();
-        output.put("order_id", orderService.createOrder(order));
+        output.put("order_id", orderService.createOrder(order).getOrderId());
         return new ResponseEntity(output, HttpStatus.OK);
     }
 

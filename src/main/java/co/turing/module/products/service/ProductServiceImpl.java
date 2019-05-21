@@ -28,6 +28,12 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ModelMapper modelMapper;
 
+    /**
+     *
+     * @param pageable
+     * @param length of description
+     * @return
+     */
     @Override
     @Cacheable
     public ProductsResponse getProducts(Pageable pageable, int length) {
@@ -45,6 +51,14 @@ public class ProductServiceImpl implements ProductService {
         return searchResponse;
     }
 
+    /**
+     *
+     * @param query
+     * @param pageable
+     * @param length
+     * @param allWords
+     * @return
+     */
     @Override
     @Cacheable
     public ProductSearchResponse search(String query, Pageable pageable, int length, String allWords) {
@@ -63,12 +77,24 @@ public class ProductServiceImpl implements ProductService {
         return searchResponse;
     }
 
+    /**
+     *
+     * @param productId
+     * @return
+     */
     @Override
     @Cacheable
     public Product getProduct(int productId) {
         return productRepo.findByProductId(productId);
     }
 
+    /**
+     *
+     * @param catId
+     * @param pageable
+     * @param length
+     * @return
+     */
     @Override
     @Cacheable
     public CategoryProductsInfo getProductsByCategory(int catId, Pageable pageable, int length) {
@@ -80,6 +106,13 @@ public class ProductServiceImpl implements ProductService {
         return department;
     }
 
+    /**
+     *
+     * @param depId
+     * @param pageable
+     * @param length
+     * @return
+     */
     @Override
     @Cacheable
     public DepartmentProducts getProductsByDepartment(int depId, Pageable pageable, int length) {
@@ -91,6 +124,11 @@ public class ProductServiceImpl implements ProductService {
         return department;
     }
 
+    /**
+     *
+     * @param productId
+     * @return
+     */
     @Override
     @Cacheable
     public ProductDetail getProductDetails(int productId) {

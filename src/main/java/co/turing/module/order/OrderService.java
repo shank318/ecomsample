@@ -8,7 +8,7 @@ import co.turing.module.payment.PaymentStatusStateMachine;
 import java.util.List;
 
 public interface OrderService {
-    int createOrder(Order order);
+    Order createOrder(Order order);
     OrderInfo getOrder(int orderId);
     List<Order> getOrders(int customerId);
     OrderShortDetail getShortDetailOrder(int orderId);

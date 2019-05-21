@@ -39,6 +39,14 @@ public class PaymentController {
     @Autowired
     PaymentService paymentService;
 
+    /**
+     *
+     * @param userDetails
+     * @param paymentRequest
+     * @return
+     * @throws ApiException
+     * @throws StripeException
+     */
     @RequestMapping(value = "/stripe/charge", method = RequestMethod.POST, produces = "application/json")
     @ApiOperation(value = "Create a stripe payment .", notes = "")
     public ResponseEntity createPayment(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody PaymentRequest paymentRequest) throws ApiException, StripeException {
@@ -47,6 +55,14 @@ public class PaymentController {
         return new ResponseEntity(paymentService.chargePayment(paymentRequest), HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param request
+     * @return
+     * @throws ApiException
+     * @throws IOException
+     * @throws StripeException
+     */
     @RequestMapping(value = "/stripe/webhooks", method = RequestMethod.POST, produces = "application/json")
     @ApiOperation(value = "Stripe Webhook .", notes = "")
     public ResponseEntity stripeWebhook(HttpServletRequest request) throws ApiException, IOException, StripeException {

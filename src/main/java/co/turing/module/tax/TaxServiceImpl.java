@@ -23,6 +23,11 @@ public class TaxServiceImpl implements TaxService {
         return taxRepo.findAll();
     }
 
+    /**
+     *
+     * @param taxId
+     * @return
+     */
     @Override
     @Cacheable
     public Tax getTax(int taxId) {

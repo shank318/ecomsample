@@ -9,26 +9,35 @@ import co.turing.module.cart.domain.Cart;
 import co.turing.module.user.domain.Customer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@CacheConfig(cacheNames={"cart"})
 public class CartServiceImpl implements CartService {
 
     @Autowired
     CartRepo cartRepo;
 
-    @Autowired
-    private ModelMapper modelMapper;
+
 
     @Override
     public String generateCartId() {
         return UUID.randomUUID().toString().substring(0, 5);
     }
 
+    /**
+     *
+     * @param addCartItem
+     * @return
+     */
     @Override
+    @CacheEvict(key = "#addCartItem.cartId")
     public List<CartItem> addCartIten(AddCartItem addCartItem) {
         Cart cart = cartRepo.findByCartIdAndProductIdAndAttributes(addCartItem.getCartId(), addCartItem.getProductId(), addCartItem.getAttributes());
         if (cart == null) {
@@ -41,14 +50,25 @@ public class CartServiceImpl implements CartService {
             cart.setQuantity(cart.getQuantity() + 1);
         }
         cartRepo.save(cart);
-        return cartRepo.getCartItems(addCartItem.getCartId());
+        return getCart(addCartItem.getCartId());
     }
 
+    /**
+     *
+     * @param cartId
+     * @return
+     */
     @Override
+    @Cacheable
     public List<CartItem> getCart(String cartId) {
         return cartRepo.getCartItems(cartId);
     }
 
+    /**
+     *
+     * @param updateCart
+     * @return
+     */
     @Override
     public List<CartItem> updateCart(UpdateCart updateCart) {
         Cart cart = cartRepo.findByItemId(updateCart.getItemId());
@@ -58,15 +78,26 @@ public class CartServiceImpl implements CartService {
         } else {
             cartRepo.addQuantityOfCartItem(updateCart.getItemId(), updateCart.getQuantity());
         }
-        return cartRepo.getCartItems(cart.getCartId());
+        return getCart(cart.getCartId());
     }
 
+    /**
+     *
+     * @param cartId
+     * @return
+     */
     @Override
+    @CacheEvict(key = "#cartId")
     public List<CartItem> deleteCart(String cartId) {
         cartRepo.deleteCart(cartId);
-        return cartRepo.getCartItems(cartId);
+        return getCart(cartId);
     }
 
+    /**
+     *
+     * @param cartId
+     * @return
+     */
     @Override
     public Double totalCartAmount(String cartId) {
         final Double cartValue = cartRepo.getCartValue(cartId);
@@ -74,11 +105,16 @@ public class CartServiceImpl implements CartService {
         return cartValue;
     }
 
+    /**
+     *
+     * @param itemId
+     * @return
+     */
     @Override
     public List<CartItem> removeCartItem(int itemId) {
         Cart cart = cartRepo.findByItemId(itemId);
         if (cart == null) throw new ApiException(TuringErrors.CART_ITEM_NOT_FOUND.getMessage(),TuringErrors.CART_ITEM_NOT_FOUND.getCode(),TuringErrors.CART_ITEM_NOT_FOUND.getField());
         cartRepo.delete(cart);
-        return cartRepo.getCartItems(cart.getCartId());
+        return getCart(cart.getCartId());
     }
 }

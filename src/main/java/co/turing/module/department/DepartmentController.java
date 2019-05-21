@@ -41,7 +41,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/departments/{department_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Login user", notes = "")
+    @ApiOperation(value = "Get a department", notes = "")
     public ResponseEntity getDepartmentById(@ApiParam(value = "", required = true) @PathVariable(value = "department_id") int id) throws ApiException {
         return new ResponseEntity(departmentService.getDepartment(id), HttpStatus.OK);
 

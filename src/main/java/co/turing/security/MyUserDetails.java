@@ -18,6 +18,12 @@ public class MyUserDetails implements UserDetailsService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    /**
+     *
+     * @param customerId
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String customerId) throws UsernameNotFoundException {
         final Customer user = customerRepository.findByCustomerId(Integer.parseInt(customerId));

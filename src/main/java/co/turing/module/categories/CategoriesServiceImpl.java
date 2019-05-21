@@ -23,6 +23,11 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Autowired
     CategoriesRepository categoriesRepository;
 
+    /**
+     *
+     * @param pageable
+     * @return
+     */
     @Override
     @Cacheable
     public ListCategoriesResponse findAllCategories(Pageable pageable) {
@@ -33,6 +38,11 @@ public class CategoriesServiceImpl implements CategoriesService {
         return categoriesResponse;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     @Cacheable
     public Category getCategory(int id) {
@@ -43,6 +53,11 @@ public class CategoriesServiceImpl implements CategoriesService {
         return byCategoryId;
     }
 
+    /**
+     *
+     * @param departmentId
+     * @return
+     */
     @Override
     @Cacheable
     public List<Category> findCategoriesByDepartmentId(int departmentId) {

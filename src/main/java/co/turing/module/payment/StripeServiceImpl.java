@@ -35,7 +35,12 @@ public class StripeServiceImpl implements PaymentService<Charge> {
     @Autowired
     OrderService orderService;
 
-
+    /**
+     *
+     * @param paymentRequest
+     * @return
+     * @throws StripeException
+     */
     @Override
     public Charge chargePayment(PaymentRequest paymentRequest) throws StripeException {
         log.info("Creating payment for Order ID::" + paymentRequest.getOrderId());
@@ -55,6 +60,13 @@ public class StripeServiceImpl implements PaymentService<Charge> {
         return charge;
     }
 
+    /**
+     *
+     * @param reqBody
+     * @param signature
+     * @return
+     * @throws SignatureVerificationException
+     */
     @Override
     public boolean confirmPayment(String reqBody, String signature) throws SignatureVerificationException {
         Event event = Webhook.constructEvent(

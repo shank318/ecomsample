@@ -35,6 +35,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     public CustomerAuthResponse signUp(Customer user) {
         if (!customerRepository.existsByEmail(user.getEmail())) {
             user.getEmail().toLowerCase();
@@ -52,6 +57,11 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    /**
+     *
+     * @param updateAddress
+     * @return
+     */
     @Override
     public Customer updateAddress(UpdateAddress updateAddress) {
         Customer customer = customerRepository.findByCustomerId(updateAddress.getCustomerId());
@@ -69,6 +79,11 @@ public class CustomerServiceImpl implements CustomerService {
         return customer;
     }
 
+    /**
+     *
+     * @param loginRequestDto
+     * @return
+     */
     @Override
     public CustomerAuthResponse login(CustomerLoginDto loginRequestDto) {
         try {
@@ -90,11 +105,21 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    /**
+     *
+     * @param customerId
+     * @return
+     */
     @Override
     public Customer get(int customerId) {
         return customerRepository.findByCustomerId(customerId);
     }
 
+    /**
+     *
+     * @param updateCustomer
+     * @return
+     */
     @Override
     public Customer updateCustomer(UpdateCustomer updateCustomer) {
         Customer customer = customerRepository.findByCustomerId(updateCustomer.getCustomerId());
@@ -111,6 +136,11 @@ public class CustomerServiceImpl implements CustomerService {
         return customer;
     }
 
+    /**
+     * 
+     * @param updateAddress
+     * @return
+     */
     @Override
     public Customer updateCreditCard(UpdateCreditCard updateAddress) {
         if (!Util.isValidCreditCard(updateAddress.getCreditCard())) {

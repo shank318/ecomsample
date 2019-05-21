@@ -26,6 +26,14 @@ public class JwtTokenFilter extends GenericFilterBean {
     }
 
 
+    /**
+     *
+     * @param req
+     * @param res
+     * @param filterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
             throws IOException, ServletException {

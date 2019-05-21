@@ -37,8 +37,13 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     ShippingService shippingService;
 
+    /**
+     *
+     * @param order
+     * @return
+     */
     @Override
-    public int createOrder(Order order) {
+    public Order createOrder(Order order) {
         order.setStatus(PaymentStatusStateMachine.INIT.getValue());
         Double amount = cartService.totalCartAmount(order.getReference());
         final Tax tax = taxService.getTax(order.getTaxId());
@@ -48,9 +53,14 @@ public class OrderServiceImpl implements OrderService {
         order.setAuthCode("");
         order.setComments("");
         Order created = orderRepo.save(order);
-        return created.getOrderId();
+        return created;
     }
 
+    /**
+     *
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderInfo getOrder(int orderId) {
         Order order = orderRepo.findByOrderId(orderId);
@@ -64,11 +74,21 @@ public class OrderServiceImpl implements OrderService {
         return orderInfo;
     }
 
+    /**
+     *
+     * @param customerId
+     * @return
+     */
     @Override
     public List<Order> getOrders(int customerId) {
         return orderRepo.findAllByCustomerId(customerId);
     }
 
+    /**
+     *
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderShortDetail getShortDetailOrder(int orderId) {
         Order order = orderRepo.findByOrderId(orderId);
@@ -79,6 +99,12 @@ public class OrderServiceImpl implements OrderService {
         return orderShortDetail;
     }
 
+    /**
+     *
+     * @param orderId
+     * @param paymentStatus
+     * @return
+     */
     @Override
     public boolean updateOrderStatus(int orderId, PaymentStatusStateMachine paymentStatus) {
         Order order = orderRepo.findByOrderId(orderId);

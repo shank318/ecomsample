@@ -13,11 +13,20 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     ReviewRepo reviewRepo;
 
+    /**
+     *
+     * @param productId
+     * @return
+     */
     @Override
     public List<Review> getReviews(int productId) {
         return reviewRepo.findAllByProductId(productId);
     }
 
+    /**
+     *
+     * @param review
+     */
     @Override
     public void createReview(Review review) {
         reviewRepo.save(review);
