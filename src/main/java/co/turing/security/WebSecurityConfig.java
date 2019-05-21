@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/shoppingcart/**").permitAll()
                 .antMatchers("/tax/**").permitAll()
                 .antMatchers("/shipping/**").permitAll()
-
+                .antMatchers("**/stripe/webhooks/**").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
 

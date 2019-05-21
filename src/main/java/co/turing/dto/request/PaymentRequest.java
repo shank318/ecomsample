@@ -1,5 +1,6 @@
 package co.turing.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,4 +28,7 @@ public class PaymentRequest {
     @ApiModelProperty(required = true)
     @NotBlank
     private String currency;
+
+    @JsonIgnore
+    int customerId;
 }

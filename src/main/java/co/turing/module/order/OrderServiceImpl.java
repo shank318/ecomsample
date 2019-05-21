@@ -7,9 +7,8 @@ import co.turing.error.TuringErrors;
 import co.turing.module.cart.CartService;
 import co.turing.module.order.domain.Order;
 import co.turing.module.order.domain.OrderShortDetail;
-import co.turing.module.order.domain.OrderStatus;
+import co.turing.module.payment.domain.PaymentStatus;
 import co.turing.module.shipping.ShippingService;
-import co.turing.module.shipping.domain.Shipping;
 import co.turing.module.tax.TaxService;
 import co.turing.module.tax.domain.Tax;
 import org.modelmapper.ModelMapper;
@@ -37,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int createOrder(Order order) {
-        order.setStatus(OrderStatus.CREATED.getValue());
+        order.setStatus(PaymentStatus.INIT.getValue());
         Double amount = cartService.totalCartAmount(order.getReference());
         final Tax tax = taxService.getTax(order.getTaxId());
         amount = amount + (amount * tax.getTaxPercentage()) / 100;
@@ -72,5 +71,16 @@ public class OrderServiceImpl implements OrderService {
         }
         OrderShortDetail orderShortDetail = modelMapper.map(order, OrderShortDetail.class);
         return orderShortDetail;
+    }
+
+    @Override
+    public boolean updateOrderStatus(int orderId, PaymentStatus paymentStatus) {
+        Order order = orderRepo.findByOrderId(orderId);
+        if (order == null) {
+            throw new ApiException(TuringErrors.ORDER_NOT_FOUND.getMessage(), TuringErrors.ORDER_NOT_FOUND.getCode(), TuringErrors.ORDER_NOT_FOUND.getField());
+        }
+        order.setStatus(paymentStatus.getValue());
+        orderRepo.save(order);
+        return true;
     }
 }
