@@ -12,5 +12,5 @@ public interface OrderService {
     OrderInfo getOrder(int orderId);
     List<Order> getOrders(int customerId);
     OrderShortDetail getShortDetailOrder(int orderId);
-    boolean updateOrderStatus(int orderId, PaymentStatusStateMachine paymentStatus);
+    Order updateOrderStatus(int orderId, PaymentStatusStateMachine paymentStatus);
 }

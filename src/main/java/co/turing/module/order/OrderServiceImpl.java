@@ -106,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public boolean updateOrderStatus(int orderId, PaymentStatusStateMachine paymentStatus) {
+    public Order updateOrderStatus(int orderId, PaymentStatusStateMachine paymentStatus) {
         Order order = orderRepo.findByOrderId(orderId);
         if (order == null) {
             throw new ApiException(TuringErrors.ORDER_NOT_FOUND.getMessage(), TuringErrors.ORDER_NOT_FOUND.getCode(), TuringErrors.ORDER_NOT_FOUND.getField());
@@ -115,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
             throw new ApiException(TuringErrors.INVALID_ORDER_STATUS.getMessage(), TuringErrors.INVALID_ORDER_STATUS.getCode(), TuringErrors.INVALID_ORDER_STATUS.getField());
         }
         order.setStatus(paymentStatus.getValue());
-        orderRepo.save(order);
-        return true;
+        final Order save = orderRepo.save(order);
+        return save;
     }
 }

@@ -36,7 +36,6 @@ public class StripeServiceImpl implements PaymentService<Charge> {
     OrderService orderService;
 
     /**
-     *
      * @param paymentRequest
      * @return
      * @throws StripeException
@@ -61,7 +60,6 @@ public class StripeServiceImpl implements PaymentService<Charge> {
     }
 
     /**
-     *
      * @param reqBody
      * @param signature
      * @return
@@ -83,7 +81,8 @@ public class StripeServiceImpl implements PaymentService<Charge> {
             return false;
         }
         Charge charge = (Charge) object.get();
-        return orderService.updateOrderStatus(Integer.parseInt(charge.getMetadata().get("order_id")), stripeStatus.getValue());
+        orderService.updateOrderStatus(Integer.parseInt(charge.getMetadata().get("order_id")), stripeStatus.getValue());
+        return true;
     }
 
 }
