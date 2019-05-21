@@ -37,6 +37,8 @@ This is a monolith backed service architecture which are divided into modules fo
 
 11 TPS can be handled by a single server tuned to support the use case. Number of threads, connections, network buffer size, open file descriptor etc. If needed we might need to add more instances of the server and load balance it.
 
+more...
+
 
 
 
