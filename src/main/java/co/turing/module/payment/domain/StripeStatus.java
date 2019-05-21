@@ -23,7 +23,7 @@ public enum StripeStatus {
 
     public static StripeStatus getEnumByString(String status) {
         for (StripeStatus e : StripeStatus.values()) {
-            if (status == e.getStatus()) return e;
+            if (status.equals(e.getStatus())) return e;
         }
         return null;
     }

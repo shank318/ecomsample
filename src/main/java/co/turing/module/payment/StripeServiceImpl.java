@@ -81,6 +81,9 @@ public class StripeServiceImpl implements PaymentService<Charge> {
             return false;
         }
         Charge charge = (Charge) object.get();
+        if (!charge.getMetadata().containsKey("order_id")){
+            return true;
+        }
         orderService.updateOrderStatus(Integer.parseInt(charge.getMetadata().get("order_id")), stripeStatus.getValue());
         return true;
     }
