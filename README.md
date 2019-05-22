@@ -31,13 +31,48 @@ This is a monolith backed service architecture which are divided into modules fo
 
 ## Advanced requirements
 
-1. To support 1000000 users a day which is approx 11~ TPS we need to focus on three things. 
+To support 1000000 users a day which is approx **11~ TPS** we need to focus on three things. 
 
-# Web server
+### Web server
 
-11 TPS can be handled by a single server tuned to support the use case. Number of threads, connections, network buffer size, open file descriptor etc. If needed we might need to add more instances of the server and load balance it.
+11 TPS can be handled by a single server tuned to support the use case. Number of **threads, connections, network buffer size, open file descriptor** etc. If needed we might need to add more instances of the server and load balance it.
 
-more...
+Currently, we are searching products from the products/attributes/categories database which will not scale because search is the heavy traffic API which needs to be scaled separately. I'd use searching engine like elasticsearch/solr to handle the search. Whenever a product is added into the database we have to send the product/attributes/categories meta data to our search engine to index. 
+
+**Kafka** can be used to send the events to our search engine whenever there is a change in the price, attributes etc in a product.
+
+### Caching
+
+We'd need a caching(**Redis**) layer on top of API's like catalog, cart, attributes, reviews etc. These are the data which doesn't change frequently thus we can cache it and update the cache whenever there is any change. 
+
+### Microservices 
+
+Even though we might not need to split the entire architecture to support 11TPS but some of the components can broken into separate microservices. 
+
+- User management 
+- Product management
+- Order management 
+- Search management 
+- Payment management
+
+
+### Database 
+
+- User management - SQL
+- Product management - NoSQL
+- Order management - SQL/State managment/Workflows
+- Search management - Elastic search/Solr
+- Payment management - SQL/State managment/Workflows
+
+For SQL database we'd need master/slave architecture to send write queries to master and read from slaves. NOSQL databases are distributed/ multi master architecture comes by default. We'll try to use the NOSQL for non-transactional services.
+
+If we see a lot of traffic is coming from a particular area/country. Say, half of the daily active users coming from the United States then we can do these changes. 
+
+**Sharding the database** - We can **shard** the database by country id and also setup a cluster of web server which can be scaled separately for a specific country. 
+
+
+
+
 
 
 
