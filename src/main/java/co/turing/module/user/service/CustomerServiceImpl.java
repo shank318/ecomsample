@@ -36,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
     private AuthenticationManager authenticationManager;
 
     /**
-     *
+     * Create an user
      * @param user
      * @return
      */
@@ -58,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
-     *
+     * Update address
      * @param updateAddress
      * @return
      */
@@ -80,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
-     *
+     * Login user
      * @param loginRequestDto
      * @return
      */
@@ -106,7 +106,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
-     *
+     * Get a user by id
      * @param customerId
      * @return
      */
@@ -116,7 +116,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
-     *
+     * Update a customer
      * @param updateCustomer
      * @return
      */
@@ -137,17 +137,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
-     * 
-     * @param updateAddress
+     * Update customer card
+     * @param updateCreditCard
      * @return
      */
     @Override
-    public Customer updateCreditCard(UpdateCreditCard updateAddress) {
-        if (!Util.isValidCreditCard(updateAddress.getCreditCard())) {
+    public Customer updateCreditCard(UpdateCreditCard updateCreditCard) {
+        if (!Util.isValidCreditCard(updateCreditCard.getCreditCard())) {
             throw new ApiException(TuringErrors.INVALID_CARD.getMessage(), TuringErrors.INVALID_CARD.getCode(), TuringErrors.INVALID_CARD.getField());
         }
-        Customer customer = customerRepository.findByCustomerId(updateAddress.getCustomerId());
-        customer.setCreditCard(updateAddress.getCreditCard());
+        Customer customer = customerRepository.findByCustomerId(updateCreditCard.getCustomerId());
+        customer.setCreditCard(updateCreditCard.getCreditCard());
         customerRepository.save(customer);
         return customer;
     }

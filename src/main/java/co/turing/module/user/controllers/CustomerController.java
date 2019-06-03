@@ -1,7 +1,9 @@
 package co.turing.module.user.controllers;
 
 import co.turing.dto.request.*;
+import co.turing.dto.response.CustomerAuthResponse;
 import co.turing.error.ApiException;
+import co.turing.module.attributes.domain.AttributeValue;
 import co.turing.module.user.domain.Customer;
 import co.turing.module.user.service.CustomerService;
 import io.swagger.annotations.*;
@@ -23,7 +25,7 @@ import javax.validation.Valid;
 @EnableAutoConfiguration
 @RequestMapping("")
 @Slf4j
-@Api(tags = {"User controller"})
+@Api(tags = {"Customer controller"})
 public class CustomerController {
 
     @Autowired
@@ -33,7 +35,7 @@ public class CustomerController {
     private ModelMapper modelMapper;
 
     @RequestMapping(value = "/customers", method = RequestMethod.POST, produces = "application/json")
-    @ApiOperation(value = "Creates user account .", notes = "")
+    @ApiOperation(value = "Creates user account .", notes = "", response = CustomerAuthResponse.class)
     public ResponseEntity registerUser(@Valid @RequestBody CustomerSignUpDto signUpRequestDto) throws ApiException, AuthenticationException {
         log.info("SignUpRequestDto request -->" + signUpRequestDto.toString());
         Customer customer = modelMapper.map(signUpRequestDto, Customer.class);
@@ -42,7 +44,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-    @ApiOperation(value = "Login user", notes = "")
+    @ApiOperation(value = "Login user", notes = "", response = CustomerAuthResponse.class)
     public ResponseEntity loginUser(@Valid @RequestBody CustomerLoginDto loginRequestDto) throws ApiException, AuthenticationException {
         log.info("LoginRequestDto request -->" + loginRequestDto.toString());
         return new ResponseEntity(customerService.login(loginRequestDto), HttpStatus.OK);
@@ -50,14 +52,14 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customer", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get Customer", notes = "")
+    @ApiOperation(value = "Get Customer", notes = "", response = Customer.class)
     public ResponseEntity getCustomer(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) throws ApiException, AuthenticationException {
         return new ResponseEntity(customerService.get(Integer.parseInt(userDetails.getUsername())), HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "/customers/address", method = RequestMethod.PUT, produces = "application/json")
-    @ApiOperation(value = "Update address of a customer", notes = "")
+    @ApiOperation(value = "Update address of a customer", notes = "", response = Customer.class)
     public ResponseEntity updateAddress(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UpdateAddress updateAddress) throws ApiException, AuthenticationException {
         updateAddress.setCustomerId(Integer.parseInt(userDetails.getUsername()));
         return new ResponseEntity(customerService.updateAddress(updateAddress), HttpStatus.OK);
@@ -65,7 +67,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customers/creditCard", method = RequestMethod.PUT, produces = "application/json")
-    @ApiOperation(value = "Update creditcard of a customer", notes = "")
+    @ApiOperation(value = "Update creditcard of a customer", notes = "", response = Customer.class)
     public ResponseEntity updateCreditCard(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UpdateCreditCard updateCreditCard) throws ApiException, AuthenticationException {
         updateCreditCard.setCustomerId(Integer.parseInt(userDetails.getUsername()));
         return new ResponseEntity(customerService.updateCreditCard(updateCreditCard), HttpStatus.OK);
@@ -73,7 +75,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customer", method = RequestMethod.PUT, produces = "application/json")
-    @ApiOperation(value = "Update Customer", notes = "")
+    @ApiOperation(value = "Update Customer", notes = "", response = Customer.class)
     public ResponseEntity updateCustomer(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UpdateCustomer updateCustomer) throws ApiException, AuthenticationException {
         updateCustomer.setCustomerId(Integer.parseInt(userDetails.getUsername()));
         return new ResponseEntity(customerService.updateCustomer(updateCustomer), HttpStatus.OK);

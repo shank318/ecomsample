@@ -24,7 +24,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     CategoriesRepository categoriesRepository;
 
     /**
-     *
+     * Get all categories
      * @param pageable
      * @return
      */
@@ -39,7 +39,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     /**
-     *
+     * Get a category
      * @param id
      * @return
      */
@@ -54,7 +54,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     /**
-     *
+     * Get categories of a department
      * @param departmentId
      * @return
      */

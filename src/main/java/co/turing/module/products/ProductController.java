@@ -1,9 +1,14 @@
 package co.turing.module.products;
 
 
+import co.turing.dto.response.CategoryProductsInfo;
+import co.turing.dto.response.DepartmentProducts;
+import co.turing.dto.response.ProductSearchResponse;
 import co.turing.error.ApiException;
 import co.turing.error.TuringErrors;
+import co.turing.module.attributes.domain.AttributeValue;
 import co.turing.module.attributes.service.AttributeService;
+import co.turing.module.products.domain.Product;
 import co.turing.module.products.domain.Review;
 import co.turing.module.products.service.ProductService;
 import co.turing.module.products.service.ReviewService;
@@ -66,7 +71,7 @@ public class ProductController {
      * @throws ApiException
      */
     @RequestMapping(value = "/products/search", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "search poroducts", notes = "")
+    @ApiOperation(value = "search poroducts", notes = "", response = ProductSearchResponse.class)
     public ResponseEntity search(@RequestParam(required = false, value = "all_words") String allWords, @RequestParam(required = true, value = "query_string") String query, @RequestParam(required = false, value = "description_length") Integer descriptionLength, @RequestParam(required = false, value = "page") Integer page, @RequestParam(required = false, value = "limit") Integer limit) throws ApiException {
         if (allWords != null && !(allWords.equals("on") || allWords.equals("off"))) {
             allWords = "on";
@@ -85,7 +90,7 @@ public class ProductController {
      * @throws ApiException
      */
     @RequestMapping(value = "/products/{product_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get product by productid", notes = "")
+    @ApiOperation(value = "Get product by productid", notes = "", response = Product.class)
     public ResponseEntity getByProductId(@ApiParam(value = "", required = true) @PathVariable(value = "product_id") int id) throws ApiException {
         return new ResponseEntity(productService.getProduct(id), HttpStatus.OK);
 
@@ -101,7 +106,7 @@ public class ProductController {
      * @throws ApiException
      */
     @RequestMapping(value = "/products/inDepartment/{department_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get products in a department", notes = "")
+    @ApiOperation(value = "Get products in a department", notes = "", response = DepartmentProducts.class)
     public ResponseEntity getProductsByDepartment(@ApiParam(value = "", required = true) @PathVariable(value = "department_id") int id, @RequestParam(required = false, value = "description_length") Integer descriptionLength, @RequestParam(required = false, value = "page") Integer page, @RequestParam(required = false, value = "limit") Integer limit) throws ApiException {
         if (descriptionLength == null) descriptionLength = 200;
         return new ResponseEntity(productService.getProductsByDepartment(id, getPageable(page, limit), descriptionLength), HttpStatus.OK);
@@ -118,7 +123,7 @@ public class ProductController {
      * @throws ApiException
      */
     @RequestMapping(value = "/products/inCategory/{category_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get products in a category", notes = "")
+    @ApiOperation(value = "Get products in a category", notes = "", response = CategoryProductsInfo.class)
     public ResponseEntity getProductsBycategory(@ApiParam(value = "", required = true) @PathVariable(value = "category_id") int id, @RequestParam(required = false, value = "description_length") Integer descriptionLength, @RequestParam(required = false, value = "page") Integer page, @RequestParam(required = false, value = "limit") Integer limit) throws ApiException {
         if (descriptionLength == null) descriptionLength = 200;
         return new ResponseEntity(productService.getProductsByCategory(id, getPageable(page, limit), descriptionLength), HttpStatus.OK);
@@ -132,7 +137,8 @@ public class ProductController {
      * @throws ApiException
      */
     @RequestMapping(value = "/products/{product_id}/reviews", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get reviews of a product", notes = "")
+    @ApiOperation(value = "Get reviews of a product", notes = "", response = Review.class,
+            responseContainer = "List")
     public ResponseEntity getProductReviews(@ApiParam(value = "", required = true) @PathVariable(value = "product_id") int id) throws ApiException {
         return new ResponseEntity(reviewService.getReviews(id), HttpStatus.OK);
 

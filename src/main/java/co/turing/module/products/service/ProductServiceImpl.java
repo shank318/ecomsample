@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper modelMapper;
 
     /**
-     *
+     * Get all Products
      * @param pageable
      * @param length of description
      * @return
@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     *
+     * Search products
      * @param query
      * @param pageable
      * @param length
@@ -62,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Cacheable
     public ProductSearchResponse search(String query, Pageable pageable, int length, String allWords) {
+        query = "*"+query+"*";
         ProductSearchResponse searchResponse = new ProductSearchResponse();
         List<ProductSearchQueryResponse> responses;
         int count;
@@ -78,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     *
+     * Get a product
      * @param productId
      * @return
      */
@@ -107,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     *
+     * Get products by department
      * @param depId
      * @param pageable
      * @param length
@@ -125,7 +126,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     *
+     * Get product details
      * @param productId
      * @return
      */

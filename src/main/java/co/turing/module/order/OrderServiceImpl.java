@@ -37,8 +37,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     ShippingService shippingService;
 
+
     /**
-     *
+     * Create an order
      * @param order
      * @return
      */
@@ -53,11 +54,13 @@ public class OrderServiceImpl implements OrderService {
         order.setAuthCode("");
         order.setComments("");
         Order created = orderRepo.save(order);
+        // Delete the cart
+        cartService.deleteCart(order.getReference());
         return created;
     }
 
     /**
-     *
+     * Get an order
      * @param orderId
      * @return
      */
@@ -75,7 +78,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     *
+     * Get all orders of a
+     * customer
      * @param customerId
      * @return
      */
@@ -85,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     *
+     * Get short order detail
      * @param orderId
      * @return
      */
@@ -100,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     *
+     * Update order status
      * @param orderId
      * @param paymentStatus
      * @return

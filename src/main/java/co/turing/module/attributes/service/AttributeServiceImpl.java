@@ -29,6 +29,11 @@ public class AttributeServiceImpl implements AttributeService {
         return attributeRepo.findAll();
     }
 
+    /**
+     *
+     * @param id
+     * @return Attribute
+     */
     @Override
     @Cacheable
     public Attribute getAttribute(int id) {
@@ -36,12 +41,22 @@ public class AttributeServiceImpl implements AttributeService {
         return one;
     }
 
+    /**
+     *
+     * @param attId
+     * @return A list of Attribute values
+     */
     @Override
     @Cacheable
     public List<AttributeValue> getAttributeValues(int attId) {
         return attributeValueRepo.findAllByAttributeId(attId);
     }
 
+    /**
+     *
+     * @param productId
+     * @return list of product attributes
+     */
     @Override
     @Cacheable
     public List<ProductAttributes> getProductAttributes(int productId) {

@@ -13,7 +13,8 @@ public class ProductCategoriesServiceImpl implements ProductCategoriesService {
     ProductCategorieRepo productCategorieRepo;
 
     /**
-     *
+     * Get ALl categories by
+     * product id
      * @param productId
      * @return
      */

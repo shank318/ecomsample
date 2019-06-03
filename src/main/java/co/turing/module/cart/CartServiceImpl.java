@@ -32,7 +32,7 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
-     *
+     * Add an item to cart
      * @param addCartItem
      * @return
      */
@@ -54,7 +54,7 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
-     *
+     * Get the cart
      * @param cartId
      * @return
      */
@@ -65,7 +65,7 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
-     *
+     * Update a cart
      * @param updateCart
      * @return
      */
@@ -82,7 +82,7 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
-     *
+     * Delete a cart
      * @param cartId
      * @return
      */
@@ -94,7 +94,7 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
-     *
+     * Get the total amount of the cart
      * @param cartId
      * @return
      */
@@ -106,7 +106,7 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
-     *
+     * Remove a cart item
      * @param itemId
      * @return
      */

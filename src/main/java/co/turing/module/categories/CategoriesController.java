@@ -1,8 +1,12 @@
 package co.turing.module.categories;
 
 
+import co.turing.dto.response.ListCategoriesResponse;
+import co.turing.dto.response.ProductCategoriesInfo;
 import co.turing.error.ApiException;
 import co.turing.error.TuringErrors;
+import co.turing.module.attributes.domain.AttributeValue;
+import co.turing.module.categories.domain.Category;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -40,7 +44,7 @@ public class CategoriesController {
      * @throws ApiException
      */
     @RequestMapping(value = "/categories", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get all Categories .", notes = "")
+    @ApiOperation(value = "Get all Categories .", notes = "", response = ListCategoriesResponse.class)
     public ResponseEntity getAllCategories(@RequestParam(required = false, value = "order") String order, @RequestParam(required = false, value = "page") Integer page, @RequestParam(required = false, value = "limit") Integer limit) throws ApiException {
         return new ResponseEntity(categoriesService.findAllCategories(getPageable(order, page, limit)), HttpStatus.OK);
 
@@ -53,7 +57,7 @@ public class CategoriesController {
      * @throws ApiException
      */
     @RequestMapping(value = "/categories/{category_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get a category", notes = "")
+    @ApiOperation(value = "Get a category", notes = "", response = Category.class)
     public ResponseEntity getCategoryById(@ApiParam(value = "", required = true) @PathVariable(value = "category_id") int id) throws ApiException {
         return new ResponseEntity(categoriesService.getCategory(id), HttpStatus.OK);
 
@@ -66,7 +70,8 @@ public class CategoriesController {
      * @throws ApiException
      */
     @RequestMapping(value = "/categories/inProduct/{product_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get categories of a product", notes = "")
+    @ApiOperation(value = "Get categories of a product", notes = "", response = ProductCategoriesInfo.class,
+            responseContainer = "List")
     public ResponseEntity getCategoriesByProductId(@ApiParam(value = "", required = true) @PathVariable(value = "product_id") int id) throws ApiException {
         return new ResponseEntity(productCategoriesService.findCategories(id), HttpStatus.OK);
 
@@ -79,7 +84,8 @@ public class CategoriesController {
      * @throws ApiException
      */
     @RequestMapping(value = "/categories/inDepartment/{department_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get categories of a department", notes = "")
+    @ApiOperation(value = "Get categories of a department", notes = "", response = Category.class,
+            responseContainer = "List")
     public ResponseEntity getCategoriesByDepartmentId(@ApiParam(value = "", required = true) @PathVariable(value = "department_id") int id) throws ApiException {
         return new ResponseEntity(categoriesService.findCategoriesByDepartmentId(id), HttpStatus.OK);
 

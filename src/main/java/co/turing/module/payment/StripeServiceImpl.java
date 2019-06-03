@@ -36,6 +36,7 @@ public class StripeServiceImpl implements PaymentService<Charge> {
     OrderService orderService;
 
     /**
+     * Create a stripe payment
      * @param paymentRequest
      * @return
      * @throws StripeException
@@ -60,6 +61,7 @@ public class StripeServiceImpl implements PaymentService<Charge> {
     }
 
     /**
+     * Confirm a payment
      * @param reqBody
      * @param signature
      * @return

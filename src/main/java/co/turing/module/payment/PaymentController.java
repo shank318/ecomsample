@@ -47,7 +47,7 @@ public class PaymentController {
      * @throws ApiException
      * @throws StripeException
      */
-    @RequestMapping(value = "/stripe/charge", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/payment/stripe/charge", method = RequestMethod.POST, produces = "application/json")
     @ApiOperation(value = "Create a stripe payment .", notes = "")
     public ResponseEntity createPayment(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody PaymentRequest paymentRequest) throws ApiException, StripeException {
         log.info("Payment request -->" + paymentRequest.toString());
@@ -72,3 +72,5 @@ public class PaymentController {
     }
 
 }
+
+

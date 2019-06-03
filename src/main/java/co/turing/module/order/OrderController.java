@@ -3,9 +3,12 @@ package co.turing.module.order;
 
 import co.turing.dto.request.CreateOrder;
 import co.turing.dto.response.GenerateCartId;
+import co.turing.dto.response.OrderInfo;
 import co.turing.error.ApiException;
+import co.turing.module.attributes.domain.AttributeValue;
 import co.turing.module.cart.CartService;
 import co.turing.module.order.domain.Order;
+import co.turing.module.order.domain.OrderShortDetail;
 import co.turing.module.user.domain.Customer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,7 +49,7 @@ public class OrderController {
      * @throws ApiException
      */
     @RequestMapping(value = "/orders/{order_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get an Order .", notes = "")
+    @ApiOperation(value = "Get an Order .", notes = "", response = OrderInfo.class)
     public ResponseEntity getOrderById(@ApiParam(value = "", required = true) @PathVariable(value = "order_id") int id) throws ApiException {
         log.info("Get Order request -->" + id);
         return new ResponseEntity(orderService.getOrder(id), HttpStatus.OK);
@@ -59,7 +62,8 @@ public class OrderController {
      * @throws ApiException
      */
     @RequestMapping(value = "/orders/inCustomer", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get an Order .", notes = "")
+    @ApiOperation(value = "Get an Order .", notes = "", response = Order.class,
+            responseContainer = "List")
     public ResponseEntity getOrdersByCustomerId(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) throws ApiException {
         return new ResponseEntity(orderService.getOrders(Integer.parseInt(userDetails.getUsername())), HttpStatus.OK);
     }
@@ -71,7 +75,7 @@ public class OrderController {
      * @throws ApiException
      */
     @RequestMapping(value = "/orders/shortDetail/{order_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get Order details in short .", notes = "")
+    @ApiOperation(value = "Get Order details in short .", notes = "", response = OrderShortDetail.class)
     public ResponseEntity getOrderShortDetail(@ApiParam(value = "", required = true) @PathVariable(value = "order_id") int id) throws ApiException {
         return new ResponseEntity(orderService.getShortDetailOrder(id), HttpStatus.OK);
     }

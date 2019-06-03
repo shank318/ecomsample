@@ -3,6 +3,8 @@ package co.turing.module.department;
 import co.turing.dto.request.CustomerLoginDto;
 import co.turing.dto.request.CustomerSignUpDto;
 import co.turing.error.ApiException;
+import co.turing.module.attributes.domain.AttributeValue;
+import co.turing.module.department.domian.Department;
 import co.turing.module.user.domain.Customer;
 import co.turing.module.user.service.CustomerService;
 import io.swagger.annotations.Api;
@@ -34,14 +36,15 @@ public class DepartmentController {
     private ModelMapper modelMapper;
 
     @RequestMapping(value = "/departments", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get all departments .", notes = "")
+    @ApiOperation(value = "Get all departments .", notes = "", response = Department.class,
+            responseContainer = "List")
     public ResponseEntity getAllDepartments() throws ApiException {
         return new ResponseEntity(departmentService.getAll(), HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "/departments/{department_id}", method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value = "Get a department", notes = "")
+    @ApiOperation(value = "Get a department", notes = "", response = Department.class)
     public ResponseEntity getDepartmentById(@ApiParam(value = "", required = true) @PathVariable(value = "department_id") int id) throws ApiException {
         return new ResponseEntity(departmentService.getDepartment(id), HttpStatus.OK);
 

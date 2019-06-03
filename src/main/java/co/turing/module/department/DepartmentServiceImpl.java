@@ -24,6 +24,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepository.findAll();
     }
 
+    /**
+     * Get department
+     * @param departmentId
+     * @return
+     */
     @Override
     @Cacheable
     public Department getDepartment(int departmentId) {
