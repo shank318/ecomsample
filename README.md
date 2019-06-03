@@ -27,7 +27,7 @@ The app is deployed on Heroku which is considerably slow most of the time. Pleas
 
 ## Architecture
 
-This is a monolith backed service architecture which is divided into modules for extensibility. I have used in-memory caching in a lot of api's to reduce the DB load. 
+This is a monolith backed service architecture which is divided into modules for extensibility. JPA is getting used as an ORM, MySQL for database. I have used in-memory caching in a lot of api's to reduce the DB load. 
 
 ## Advanced requirements
 
