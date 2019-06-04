@@ -29,6 +29,8 @@ The app is deployed on Heroku which is considerably slow most of the time. Pleas
 
 This is a monolith backed service architecture which is divided into modules for extensibility. JPA is getting used as an ORM, MySQL for database. I have used in-memory caching in a lot of api's to reduce the DB load. 
 
+![IMG_3942](https://user-images.githubusercontent.com/5608772/58866288-e898e100-86d5-11e9-93f9-11826c5c3a37.jpg)
+
 ## Advanced requirements
 
 To support 1000000 users a day which is approx **11~ TPS** we need to focus on three things. 
